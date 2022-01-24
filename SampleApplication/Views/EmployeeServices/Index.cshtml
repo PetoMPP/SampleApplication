@@ -1,0 +1,54 @@
+﻿@model IEnumerable<SampleApplication.Models.EmployeeServiceModel>
+
+@{
+    ViewData["Title"] = "Asign services";
+}
+
+<h1>Asign services</h1>
+<a asp-controller="Employees" asp-action="Index">Go back</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee.UserName)
+            </th>
+            <th>
+                Assigned Services
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (EmployeeModel e in Model.First().AllEmployees)
+        {
+            <tr>
+                <td>
+                    @e.UserName
+                </td>
+                <td>
+                    @{string assignedServicesString = "";}
+                    @foreach (EmployeeServiceModel es in Model)
+                    {
+                        if (es.Employee != null)
+                        {
+                            if (es.Employee.UserName == e.UserName)
+                            {
+                                assignedServicesString += $"{es.Service.Name}, ";
+                            }
+                        }
+                    }
+                    @if (assignedServicesString.Length > 2)
+                    {
+                        assignedServicesString = assignedServicesString.Substring(0, assignedServicesString.Length - 2);
+                    }
+
+                    @assignedServicesString
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@e.Id">Manage services</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

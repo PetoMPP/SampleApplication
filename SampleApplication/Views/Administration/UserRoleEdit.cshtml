@@ -1,0 +1,56 @@
+﻿@model SampleApplication.Models.UserModel
+
+
+@{
+    ViewData["Title"] = "Edit Role";
+}
+
+<h1>Manage user roles</h1>
+
+<h4>Managing roles for: @Html.DisplayFor(model => model.Name)</h4>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Role
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (string item in Model.CurrentRoles.Concat(Model.AvailableRoles).OrderBy(x => x))
+        {
+        <tr>
+            <td>
+                @item
+            </td>
+            @if (Model.CurrentRoles.Any(x => x == item))
+            {
+                <td>
+                    <a class="btn-link disabled" asp-action="UserRoleAdd" asp-route-userId="@Model.UserDbId" asp-route-roleName="@item">Add</a>
+                    <a asp-action="UserRoleRemove" asp-route-userId="@Model.UserDbId" asp-route-roleName="@item">Revoke</a>
+                </td>
+            }else
+            {
+            <td>
+                <a asp-action="UserRoleAdd" asp-route-userId="@Model.UserDbId" asp-route-roleName="@item">Add</a>
+                <a class="btn-link disabled" asp-action="UserRoleRemove" asp-route-userId="@Model.UserDbId" asp-route-roleName="@item">Revoke</a>
+            </td>
+            }
+        </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    <a asp-action="UserIndex">Back to List</a>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

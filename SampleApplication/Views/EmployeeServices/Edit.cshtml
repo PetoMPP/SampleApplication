@@ -1,0 +1,66 @@
+﻿@model IEnumerable<SampleApplication.Models.EmployeeServiceModel>
+
+@{ List<EmployeeServiceModel> activeEmployeeServices = new List<EmployeeServiceModel>();}
+
+@foreach (EmployeeServiceModel es in Model)
+{
+    if (es.Employee != null)
+    {
+        if (es.ActiveEmployee.Id == es.Employee.Id)
+        {
+            activeEmployeeServices.Add(es); 
+        }
+    }
+}
+
+@{
+    ViewData["Title"] = "Manage Services";
+}
+
+<h1>Manage Services</h1>
+
+<h4>Managing services for: @Html.DisplayFor(model => model.First().ActiveEmployee.UserName)</h4>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Service
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (ServiceModel s in Model.First().AllServices)
+        {
+            <tr>
+                <td>
+                    @s.Name
+                </td>
+                @if (activeEmployeeServices.Any(x => x.Service.Id == s.Id))
+                {
+                    <td>
+                        <a class="btn-link disabled" asp-action="Add" asp-route-userId="@Model.First().ActiveEmployee.Id" asp-route-serviceId="@s.Id">Add</a>
+                        <a asp-action="Delete" asp-route-userId="@Model.First().ActiveEmployee.Id" asp-route-serviceId="@s.Id">Revoke</a>
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Add" asp-route-userId="@Model.First().ActiveEmployee.Id" asp-route-serviceId="@s.Id">Add</a>
+                        <a class="btn-link disabled" asp-action="Delete" asp-route-userId="@Model.First().ActiveEmployee.Id" asp-route-serviceId="@s.Id">Revoke</a>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

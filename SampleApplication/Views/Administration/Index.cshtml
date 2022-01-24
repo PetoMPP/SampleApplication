@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SampleApplication.Models.RoleModel>
+
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<h1>Manage user roles</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4 pb-3">
+        <a type="button" asp-controller="Administration" asp-action="RoleCreate" class="btn btn-primary">Create Role</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4 pb-3">
+        <a type="button" asp-controller="Administration" asp-action="UserIndex" class="btn btn-primary">Asign User to a Role</a>
+    </div>
+</div>
+<h4>Roles</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoleDbId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RoleDbId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="RoleEdit" asp-route-id="@item.RoleDbId">Edit</a> |
+                    <a asp-action="RoleDelete" asp-route-id="@item.RoleDbId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

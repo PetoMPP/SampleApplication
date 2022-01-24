@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SampleApplication.Models.UserModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>This is a sample web application made by Piotr Pietrzyk. It is supposed to simulate a barber shop administration website.</p>
+    <p>You have to log in as an admin to access various views.</p>
+    <h4>Initially created accounts for testing purposes:</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Default Password
+                </th>
+            </tr>
+        </thead>
+        @foreach (UserModel user in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => user.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => user.DefaultPassword)
+                </td>
+            </tr>
+        }
+    </table>
+    
+    
+</div>

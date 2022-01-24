@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SampleApplication.Models.UserModel>
+
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<h1>Manage user roles</h1>
+
+
+<hr />
+<a asp-action="Index">Go Back</a>
+<h4>User Roles Assignment</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserDbId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CurrentRoles)
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserDbId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>@{string roles = "";}  
+                @foreach (string role in item.CurrentRoles)
+                {
+                    roles += $"{role}, ";
+                }
+                @{string output = "";}
+            @if (roles.Length > 2)
+            {
+                output = roles.Substring(0, roles.Length - 2); 
+            }
+                @output
+            </td>
+            <td>
+                <a asp-action="UserRoleEdit" asp-route-id="@item.UserDbId">Manage Roles</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
